@@ -1,0 +1,23 @@
+{ 
+    "C_Cpp.default.includePath": ["${env:GDK}\\inc",
+    "${env:GDK}\\res",
+    "res",
+    "inc",
+    "src\\visuals"
+],
+"files.associations": {
+    "genesis.h": "c",
+    "memory.h": "c",
+    "resources.h": "c",
+    "grid-test.h": "c",
+    "card_render.h": "c",
+    "vdp_pal.h": "c",
+    "shuffle.h": "c",
+    "card_mgmt.h": "c",
+    "cards.h": "c",
+    "cardstack.h": "c",
+    "select.h": "c",
+    "intro.h": "c",
+    "debug.h": "c"
+}
+}
