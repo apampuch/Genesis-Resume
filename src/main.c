@@ -1,31 +1,59 @@
-/**
- * Hello World Example
- * Created With Genesis-Code extension for Visual Studio Code
- * Use "Genesis Code: Compile" command to compile this program.
- **/
 #include <genesis.h>
 #include <resources.h>
+#include "sections.h"
 #include "text.h"
 #include "color.h"
+#include "controller.h"
 
 int main()
 {
+    int counter = 0;
+
     // setup font
-    PAL_setPaletteColors(0, &TreePal);
+    PAL_setPaletteColors(0, &Greyscale);
     PAL_setPaletteColors(16, &FontPal);
     VDP_loadFont(&BubbleFont, DMA);
     VDP_setTextPalette(PAL1);
 
+    // VDP_loadTileSet(&Keyboard, TILE_USERINDEX, DMA);
+    // VDP_fillTileMapRectInc(BG_B, TILE_ATTR_FULL(PAL0, 0, 0, 0, TILE_USERINDEX), 0, 0, 40, 28);
+
     // print skills
-    for (int i=2; i<23+i; i++)
-    {
-        VDP_drawText(skills[i], 2, i);
-    }
+    // const int START_ROW = 2;
+    // for (u16 i = 0; i <= 22; i++)
+    // {
+    //     VDP_drawTextBG(VDP_BG_A, skills[i], 2, i + START_ROW);
+    // }
+
+    // colorize palette
+    u16 dyeColor = RGB24_TO_VDPCOLOR(0xFF0000);
+    
+    colorizeRange(1,9, dyeColor);
+
+    // setup debug controls
+    // JOY_setEventHandler(colorizeDebugCallback);
+
+    // real shit starts here
+
+    // VDP_setScrollingMode(HSCROLL_LINE, VSCROLL_PLANE);
+    // s16 scrollValues[2] = {0, 0};
+    // VDP_setHorizontalScrollLine(BG_B, 64, scrollValues, 2, DMA);
+
+    Section mainSection;
+    setupMainSection(&mainSection);
+    Section currentSection = mainSection;
 
     while(1)
     {
-        //For versions prior to SGDK 1.60 use VDP_waitVSync instead.
+        counter++;
+        if (counter % 6 == 0)
+        {
+            dyeColor = smoothRotateHue(dyeColor, PAL_getColor(8));
+            colorizeRange(1,9,dyeColor);
+        }
+
         SYS_doVBlankProcess();
+        currentSection.updateFunc(&currentSection);
     }
     return (0);
 }

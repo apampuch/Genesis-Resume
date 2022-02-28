@@ -1,6 +1,6 @@
 char skills[22][40] = {
-    "Programming: C, C#, Python, Java,",
-    "JavaScript, PHP",
+    "Programming: C, C Sharp, Python,",
+    "Java, JavaScript, PHP",
     "",
     "Database: SQL, SQLite DB Browser",
     "",
