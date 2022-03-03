@@ -7,6 +7,7 @@ extern const Palette AndResPal;
 extern const TileSet BubbleFont;
 extern const TileSet Keyboard;
 extern const TileSet PCB;
+extern const TileSet Cursor;
 extern const TileSet AndrewsResume;
 
 #endif // _RES_RESOURCES_H_

@@ -1,6 +1,7 @@
 #include "cavalier_debug.h"
 #include "color.h"
 #include "sections.h"
+#include "vdp_manage.h"
 #include <resources.h>
 
 // this is a stack which keeps track of what link you're on
@@ -8,8 +9,6 @@ Section* sectionStack[8];
 u8 sectionStackIndex = 0;
 s16 verticalScrollValue = 0;
 
-// pointer to last available part of VDP
-u16 VDPStack = TILE_USERINDEX;
 u16 andrewsResumeTilesLoc;
 u16 backgroundLoc;
 
@@ -31,22 +30,6 @@ void previousLink()
     }
 }
 
-// Called in by each setup function to do resetting.
-void setupReset()
-{
-    VDPStack = TILE_USERINDEX;
-}
-
-// loads a tilestack and advances the stack pointer
-// returns where the tileset was placed
-u16 loadFreeVDPSpace(const TileSet* t)
-{
-    u16 retVal = VDPStack;
-    VDP_loadTileSet(t, VDPStack, DMA);
-    VDPStack += t->numTile;
-    return retVal;
-}
-
 void drawAndrewsResumeLetter(u16 index, u16 x, u16 y)
 {
     // calculate index offset
@@ -64,8 +47,6 @@ void mainSectionUpdate(Section* this)
     static s8 colorTicker = 0;
     static s8 colorChange = 1;
     static u8 tileCounter = 0;
-
-
 
     // raise title
     if (verticalScrollValue<60)
@@ -139,7 +120,7 @@ void mainSectionUpdate(Section* this)
 
 void setupMainSection(Section* s)
 {
-    setupReset();
+    resetVDPStack();
     // load text
     andrewsResumeTilesLoc = loadFreeVDPSpace(&AndrewsResume);
     PAL_setPalette(PAL2, AndResPal.data);
