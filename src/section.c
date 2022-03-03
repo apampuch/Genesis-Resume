@@ -1,3 +1,5 @@
+#include "cavalier_debug.h"
+#include "color.h"
 #include "sections.h"
 #include <resources.h>
 
@@ -15,7 +17,7 @@ void followSectionLink(Section* sourceSection, u8 linkIndex)
 {
     if (sourceSection->links[linkIndex] != NULL)
     {
-        sectionStack[++sectionStackIndex] = sourceSection->links[linkIndex];
+        // sectionStack[++sectionStackIndex] = sourceSection->links[linkIndex];
         // load section
     }
 }
@@ -54,11 +56,84 @@ void drawAndrewsResumeLetter(u16 index, u16 x, u16 y)
 
 void mainSectionUpdate(Section* this)
 {
-    KLog("Calling!");
-    if (verticalScrollValue<0)
+    const u8 TICK_RATE = 6;
+    static u8 masterTimer;
+
+    const s8 TICKER_MAX = 6;
+    const s8 TICKER_MIN = -4;
+    static s8 colorTicker = 0;
+    static s8 colorChange = 1;
+    static u8 tileCounter = 0;
+
+
+
+    // raise title
+    if (verticalScrollValue<60)
     {
         verticalScrollValue++;
         VDP_setVerticalScroll(BG_A, verticalScrollValue);
+    }
+
+    // fade in menu items
+    else if (tileCounter < 16)
+    {
+        #define FONT_PIX_ROWS 744
+
+        // get the font tiles
+        u32* tiles = BubbleFont.tiles;
+
+        u32 tilesInRAM[FONT_PIX_ROWS];
+        // for each pixel in options tileset
+        for (int i=0; i<FONT_PIX_ROWS; i++)
+        {
+            u32 pixelRow = 0;
+            // each u32 is made up of 8 nybbles for a row of 8 pixels
+            for (int sft=0; sft<32; sft += 4)
+            {
+                u32 mask = 0xF << sft;
+                u32 pixel = tiles[i] & mask;
+                // debug if not 0
+
+                // if tileCounter >= pixel, write actual pixel palette value to vdp
+                if (tileCounter >= pixel >> sft)
+                {
+                    pixelRow += pixel;
+                }
+                // otherwise write pixel as 0, which is a nop here                    
+            }
+
+            // set the row of pixels
+            tilesInRAM[i] = pixelRow;
+        }
+        
+        VDP_loadTileData(tilesInRAM, TILE_FONTINDEX, BubbleFont.numTile, DMA);
+        // VDP_loadFontData(&tilesInRAM, BubbleFont.numTile, DMA);
+        tileCounter++;
+    }
+    // enable selection
+    else
+    {
+        if (++masterTimer == TICK_RATE)
+        {
+            masterTimer = 0;
+            colorTicker += colorChange;
+
+            // invert when we reach an end
+            if (colorTicker == TICKER_MAX || colorTicker == TICKER_MIN)
+                colorChange = -colorChange;
+
+            s8 colorMod = clamp(colorTicker, 0, 5);
+
+            // darken and lighten
+            const u8 greens[8] = {0, 1, 2, 3, 4, 5, 6, 7};
+            for (u8 i = 0; i < 8; i++)
+            {
+                u8 colorIndex = i+1;
+                u16 colorToSet = greens[i] - min(colorMod, greens[i]);
+                colorToSet = colorToSet << VDPPALETTE_GREENSFT;
+                PAL_setColor(colorIndex, colorToSet);
+            }
+        }
     }
 }
 
@@ -98,7 +173,11 @@ void setupMainSection(Section* s)
     drawAndrewsResumeLetter(8, x, y);       x += INCREMENT_VALUE;   // m
     drawAndrewsResumeLetter(4, x, y);                               // e
 
+    // setup scrolling
     verticalScrollValue = -96;
     VDP_setVerticalScroll(BG_A, verticalScrollValue);
     s->updateFunc = &mainSectionUpdate;
+
+    // setup background color
+    colorizeRange(1,9, RGB24_TO_VDPCOLOR(0x00FF00));
 }

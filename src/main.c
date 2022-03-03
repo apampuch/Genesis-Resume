@@ -43,14 +43,23 @@ int main()
     setupMainSection(&mainSection);
     Section currentSection = mainSection;
 
+    // clear font data so it can fade in
+    VDP_fillTileData(0, TILE_FONTINDEX, 93, TRUE);
+
+    // place text
+    VDP_drawText("Skills", 4, 24);
+    VDP_drawText("Experience", 28, 24);
+    VDP_drawText("Education", 4, 28);
+    VDP_drawText("Contact", 28, 28);
+
     while(1)
     {
-        counter++;
-        if (counter % 6 == 0)
-        {
-            dyeColor = smoothRotateHue(dyeColor, PAL_getColor(8));
-            colorizeRange(1,9,dyeColor);
-        }
+        // counter++;
+        // if (counter % 6 == 0)
+        // {
+        //     dyeColor = smoothRotateHue(dyeColor, PAL_getColor(8));
+        //     colorizeRange(1,9,dyeColor);
+        // }
 
         SYS_doVBlankProcess();
         currentSection.updateFunc(&currentSection);

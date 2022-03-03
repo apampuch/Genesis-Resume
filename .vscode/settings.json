@@ -17,6 +17,7 @@
     "cardstack.h": "c",
     "select.h": "c",
     "intro.h": "c",
-    "debug.h": "c"
+    "debug.h": "c",
+    "color.h": "c"
 }
 }

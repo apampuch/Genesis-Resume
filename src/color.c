@@ -1,4 +1,5 @@
 #include <genesis.h>
+#include "cavalier_debug.h"
 
 // hue rotation:
 // increase R/G/B to cap
@@ -6,16 +7,6 @@
 // rinse and repeat
 
 bool DEBUG_COND = TRUE;
-
-void KLog_H1(const char *text, int hex)
-{
-    if (DEBUG_COND)
-    {
-        char buffer[512];
-        sprintf(buffer, "%s%X", text, hex);
-        KLog(buffer);
-    }
-}
 
 u16 colorize(u16 originalColor, u16 dyeColor)
 {
@@ -92,7 +83,7 @@ void colorizeRange(u16 start, u16 end, u16 dyeColor)
             sameColorCount++;
     }
 
-    KLog_U1("Number of same colors:", sameColorCount);
+    // KLog_U1("Number of same colors:", sameColorCount);
     PAL_setColors(start, newColors, colorCount);
 }
 
