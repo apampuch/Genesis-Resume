@@ -74,6 +74,12 @@ void updateMainSection(Section* s)
         VDP_loadTileData(tilesInRAM, TILE_FONTINDEX, BubbleFont.numTile, DMA);
         // VDP_loadFontData(&tilesInRAM, BubbleFont.numTile, DMA);
         tileCounter++;
+
+        // TODO finish sine wave background
+
+        // VDP_setScrollingMode(HSCROLL_LINE, VSCROLL_PLANE);
+        // s16 scrollValues[2] = {0, 0};
+        // VDP_setHorizontalScrollLine(BG_B, 64, scrollValues, 2, DMA);
     }
     // enable selection
     else
@@ -141,6 +147,12 @@ void loadMainSection(Section* s)
 
     // setup background color
     colorizeRange(1,9, RGB24_TO_VDPCOLOR(0x00FF00));
+
+    // place text
+    VDP_drawText("Skills", 4, 24);
+    VDP_drawText("Experience", 28, 24);
+    VDP_drawText("Education", 4, 28);
+    VDP_drawText("Contact", 28, 28);
 }
 
 void setupMainSection(Section* s)
@@ -157,8 +169,27 @@ void setupMainSection(Section* s)
     s->links[0][1] = malloc(sizeof(Section));
     s->links[1][1] = malloc(sizeof(Section));
 
+    // coords
+    s->linkCoords[0][0][0] = 12;
+    s->linkCoords[0][0][1] = 16 * 8;
+
+    s->linkCoords[1][0][0] = 204;
+    s->linkCoords[1][0][1] = 16 * 8;
+
+    s->linkCoords[0][1][0] = 12;
+    s->linkCoords[0][1][1] = 20 * 8;
+
+    s->linkCoords[1][1][0] = 204;
+    s->linkCoords[1][1][1] = 20 * 8;
+
     setupSkillsSection(s->links[0][0]);
     setupExperienceSection(s->links[1][0]);
     setupEducationSection(s->links[0][1]);
     setupContactSection(s->links[1][1]);
+
+    s->selected[0] = 0;
+    s->selected[1] = 0;
+
+    s->maxes[0] = 1;
+    s->maxes[1] = 1;
 }

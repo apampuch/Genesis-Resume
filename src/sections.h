@@ -11,6 +11,7 @@ typedef struct Section
 
     // what the arrow is pointing to
     u16 selected[2];
+    u16 maxes[2]; // max x and y values
 
     void (*updateFunc) (struct Section* self);
     void (*loadFunc) (struct Section* self);

@@ -2,6 +2,7 @@
 
 // pointer to last available part of VDP
 u16 VDPStack = TILE_USERINDEX;
+Sprite* cursor;
 
 u16 getVDPStack()
 {

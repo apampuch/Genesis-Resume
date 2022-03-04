@@ -8,6 +8,6 @@ extern const TileSet BubbleFont;
 extern const TileSet Keyboard;
 extern const TileSet PCB;
 extern const TileSet AndrewsResume;
-extern const SpriteDefinition Cursor;
+extern const SpriteDefinition CursorSprite;
 
 #endif // _RES_RESOURCES_H_
