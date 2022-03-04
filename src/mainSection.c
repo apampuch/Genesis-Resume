@@ -102,25 +102,6 @@ void updateMainSection(Section* s)
     }
 }
 
-void setupMainSection(Section* s)
-{
-    // setup scrolling
-    verticalScrollValue = -96;
-    VDP_setVerticalScroll(BG_A, verticalScrollValue);
-    s->updateFunc = &updateMainSection;
-
-    // setup links
-    s->links[0][0] = malloc(sizeof(Section));
-    s->links[1][0] = malloc(sizeof(Section));
-    s->links[0][1] = malloc(sizeof(Section));
-    s->links[1][1] = malloc(sizeof(Section));
-
-    setupSkillsSection(s->links[0][0]);
-    setupExperienceSection(s->links[1][0]);
-    setupEducationSection(s->links[0][1]);
-    setupContactSection(s->links[1][1]);
-}
-
 void loadMainSection(Section* s)
 {
     resetVDPStack();
@@ -160,4 +141,24 @@ void loadMainSection(Section* s)
 
     // setup background color
     colorizeRange(1,9, RGB24_TO_VDPCOLOR(0x00FF00));
+}
+
+void setupMainSection(Section* s)
+{
+    // setup scrolling
+    verticalScrollValue = -96;
+    VDP_setVerticalScroll(BG_A, verticalScrollValue);
+    s->updateFunc = &updateMainSection;
+    s->loadFunc = &loadMainSection;
+
+    // setup links
+    s->links[0][0] = malloc(sizeof(Section));
+    s->links[1][0] = malloc(sizeof(Section));
+    s->links[0][1] = malloc(sizeof(Section));
+    s->links[1][1] = malloc(sizeof(Section));
+
+    setupSkillsSection(s->links[0][0]);
+    setupExperienceSection(s->links[1][0]);
+    setupEducationSection(s->links[0][1]);
+    setupContactSection(s->links[1][1]);
 }

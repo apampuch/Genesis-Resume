@@ -42,9 +42,7 @@ int main()
     // setup sections
     Section mainSection;
     setupMainSection(&mainSection);
-
-    Section currentSection = mainSection;
-    loadMainSection(&currentSection);
+    followSectionLink(&mainSection);
 
     // clear font data so it can fade in
     VDP_fillTileData(0, TILE_FONTINDEX, 93, TRUE);
@@ -65,7 +63,7 @@ int main()
         // }
 
         SYS_doVBlankProcess();
-        currentSection.updateFunc(&currentSection);
+        currentSection()->updateFunc(&currentSection);
     }
     return (0);
 }

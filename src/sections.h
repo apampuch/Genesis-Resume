@@ -16,6 +16,7 @@ typedef struct Section
     void (*loadFunc) (struct Section* self);
 } Section;
 
+Section* currentSection();
 void followSectionLink(Section* destSection);
+
 void setupMainSection(Section* s);
-void loadMainSection(Section* s);
