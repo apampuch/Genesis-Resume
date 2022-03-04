@@ -39,9 +39,12 @@ int main()
     // s16 scrollValues[2] = {0, 0};
     // VDP_setHorizontalScrollLine(BG_B, 64, scrollValues, 2, DMA);
 
+    // setup sections
     Section mainSection;
     setupMainSection(&mainSection);
+
     Section currentSection = mainSection;
+    loadMainSection(&currentSection);
 
     // clear font data so it can fade in
     VDP_fillTileData(0, TILE_FONTINDEX, 93, TRUE);

@@ -18,6 +18,7 @@
     "select.h": "c",
     "intro.h": "c",
     "debug.h": "c",
-    "color.h": "c"
+    "color.h": "c",
+    "sections.h": "c"
 }
 }

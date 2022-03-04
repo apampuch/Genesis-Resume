@@ -4,31 +4,15 @@
 #include "vdp_manage.h"
 #include <resources.h>
 
-// this is a stack which keeps track of what link you're on
-Section* sectionStack[8];
-u8 sectionStackIndex = 0;
+void setupSkillsSection(Section* s);
+void setupExperienceSection(Section* s);
+void setupEducationSection(Section* s);
+void setupContactSection(Section* s);
+
 s16 verticalScrollValue = 0;
 
 u16 andrewsResumeTilesLoc;
 u16 backgroundLoc;
-
-void followSectionLink(Section* sourceSection, u8 linkIndex)
-{
-    if (sourceSection->links[linkIndex] != NULL)
-    {
-        // sectionStack[++sectionStackIndex] = sourceSection->links[linkIndex];
-        // load section
-    }
-}
-
-void previousLink()
-{
-    if (sectionStackIndex > 0)
-    {
-        sectionStackIndex--;
-        // load section
-    }
-}
 
 void drawAndrewsResumeLetter(u16 index, u16 x, u16 y)
 {
@@ -37,7 +21,7 @@ void drawAndrewsResumeLetter(u16 index, u16 x, u16 y)
     VDP_fillTileMapRectInc(VDP_BG_A, TILE_ATTR_FULL(PAL2, 0, 0, 0, index), x, y, 4, 4);
 }
 
-void mainSectionUpdate(Section* this)
+void updateMainSection(Section* s)
 {
     const u8 TICK_RATE = 6;
     static u8 masterTimer;
@@ -120,7 +104,27 @@ void mainSectionUpdate(Section* this)
 
 void setupMainSection(Section* s)
 {
+    // setup scrolling
+    verticalScrollValue = -96;
+    VDP_setVerticalScroll(BG_A, verticalScrollValue);
+    s->updateFunc = &updateMainSection;
+
+    // setup links
+    s->links[0][0] = malloc(sizeof(Section));
+    s->links[1][0] = malloc(sizeof(Section));
+    s->links[0][1] = malloc(sizeof(Section));
+    s->links[1][1] = malloc(sizeof(Section));
+
+    setupSkillsSection(s->links[0][0]);
+    setupExperienceSection(s->links[1][0]);
+    setupEducationSection(s->links[0][1]);
+    setupContactSection(s->links[1][1]);
+}
+
+void loadMainSection(Section* s)
+{
     resetVDPStack();
+
     // load text
     andrewsResumeTilesLoc = loadFreeVDPSpace(&AndrewsResume);
     PAL_setPalette(PAL2, AndResPal.data);
@@ -153,11 +157,6 @@ void setupMainSection(Section* s)
     drawAndrewsResumeLetter(7, x, y);       x += INCREMENT_VALUE;   // u
     drawAndrewsResumeLetter(8, x, y);       x += INCREMENT_VALUE;   // m
     drawAndrewsResumeLetter(4, x, y);                               // e
-
-    // setup scrolling
-    verticalScrollValue = -96;
-    VDP_setVerticalScroll(BG_A, verticalScrollValue);
-    s->updateFunc = &mainSectionUpdate;
 
     // setup background color
     colorizeRange(1,9, RGB24_TO_VDPCOLOR(0x00FF00));

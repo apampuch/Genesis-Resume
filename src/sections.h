@@ -12,8 +12,10 @@ typedef struct Section
     // what the arrow is pointing to
     u16 selected[2];
 
-    void (*updateFunc) (struct Section* this);
+    void (*updateFunc) (struct Section* self);
+    void (*loadFunc) (struct Section* self);
 } Section;
 
-void followSectionLink(Section* sourceSection, u8 linkIndex);
+void followSectionLink(Section* destSection);
 void setupMainSection(Section* s);
+void loadMainSection(Section* s);
