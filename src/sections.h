@@ -19,5 +19,5 @@ typedef struct Section
 
 Section* currentSection();
 void followSectionLink(Section* destSection);
-
+void previousLink();
 void setupMainSection(Section* s);
