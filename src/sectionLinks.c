@@ -11,9 +11,12 @@ Section* currentSection()
 
 void followSectionLink(Section* destSection)
 {
-    sectionStack[sectionStackIndex] = destSection;
-    sectionStackIndex++;
-    destSection->loadFunc(destSection);
+    if (destSection != NULL) 
+    {
+        sectionStack[sectionStackIndex] = destSection;
+        sectionStackIndex++;
+        destSection->loadFunc(destSection);
+    }
 }
 
 void previousLink()
