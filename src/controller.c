@@ -29,18 +29,11 @@ void menuControls(u16 joy, u16 changed, u16 state)
             s->selected[0]++;
         }
 
-        // // clamp
-        // if (state & BUTTON_DIR)
-        // {
-        //     s->selected[0] = clamp(s->selected[0], 0, s->maxes[0]);
-        //     s->selected[1] = clamp(s->selected[1], 0, s->maxes[1]);
-        // }
-
         // redraw the cursor
         u16* xy = s->linkCoords[s->selected[0]][s->selected[1]];
-        KLog_U2("SX: ", s->selected[0], "SY: ", s->selected[1]);
-        KLog_U2("X: ", xy[0], "Y: ", xy[1]);
-        SPR_setPosition(cursor, xy[0], xy[1]);\
+        // KLog_U2("SX: ", s->selected[0], "SY: ", s->selected[1]);
+        // KLog_U2("X: ", xy[0], "Y: ", xy[1]);
+        SPR_setPosition(cursor, xy[0], xy[1]);
     
         if (state & BUTTON_A)
         {

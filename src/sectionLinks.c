@@ -11,16 +11,18 @@ Section* currentSection()
 
 void followSectionLink(Section* destSection)
 {
-    sectionStack[sectionStackIndex++] = destSection;
+    sectionStack[sectionStackIndex] = destSection;
+    sectionStackIndex++;
     destSection->loadFunc(destSection);
 }
 
 void previousLink()
 {
-    if (sectionStackIndex > 0)
+    if (sectionStackIndex > 1)
     {
         --sectionStackIndex;
+        KLog(sectionStack[sectionStackIndex - 1]->DBG_STR);
         // load section
-        sectionStack[sectionStackIndex]->loadFunc(sectionStack[sectionStackIndex]);
+        sectionStack[sectionStackIndex - 1]->loadFunc(sectionStack[sectionStackIndex - 1]);
     }
 }

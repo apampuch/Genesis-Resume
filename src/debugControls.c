@@ -5,7 +5,7 @@ u16 palHistoryStack[32][8];
 u16 dyeColorStack[32];
 u8 stackPointer = 0; // should point to first blank
 
-u16 dyeColor = RGB24_TO_VDPCOLOR(0xFF0000);
+u16 DBGdyeColor = RGB24_TO_VDPCOLOR(0xFF0000);
 
 void colorizeDebugCallback(u16 joy, u16 changed, u16 state)
 {
@@ -17,13 +17,13 @@ void colorizeDebugCallback(u16 joy, u16 changed, u16 state)
             {
                 // store in stacks
                 // increment pointer
-                dyeColorStack[stackPointer] = dyeColor;
+                dyeColorStack[stackPointer] = DBGdyeColor;
                 // dyeColor = rotateHue(dyeColor);
-                dyeColor = smoothRotateHue(dyeColor, PAL_getColor(8));
+                DBGdyeColor = smoothRotateHue(DBGdyeColor, PAL_getColor(8));
                 PAL_getColors(1, palHistoryStack[stackPointer++], 8);
                 
                 // colorize range
-                colorizeRange(1,9, dyeColor);
+                colorizeRange(1,9, DBGdyeColor);
             }
             else if (state & BUTTON_LEFT && stackPointer > 0)
             {
@@ -31,7 +31,7 @@ void colorizeDebugCallback(u16 joy, u16 changed, u16 state)
                 // load colors
                 PAL_setColors(1, palHistoryStack[--stackPointer], 8);
                 // reset dye color
-                dyeColor = dyeColorStack[stackPointer];
+                DBGdyeColor = dyeColorStack[stackPointer];
             }
         }
     }

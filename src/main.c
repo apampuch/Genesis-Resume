@@ -1,7 +1,6 @@
 #include <genesis.h>
 #include <resources.h>
 #include "sections.h"
-#include "text.h"
 #include "color.h"
 #include "controller.h"
 #include "vdp_manage.h"
@@ -42,11 +41,13 @@ int main()
         TILE_ATTR(PAL1, 0, 0, 0)
     );
 
+    Section* curSec;
     while(1)
     {
         SPR_update();
         SYS_doVBlankProcess();
-        currentSection()->updateFunc(&currentSection);
+        curSec = currentSection();
+        curSec->updateFunc(curSec);
     }
     return (0);
 }

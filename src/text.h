@@ -1,4 +1,6 @@
-char skills[22][40] = {
+#pragma once
+
+char skillsText[22][40] = {
     "Programming: C, C Sharp, Python,",
     "Java, JavaScript, PHP",
     "",

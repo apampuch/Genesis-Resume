@@ -9,6 +9,9 @@ void setupExperienceSection(Section* s);
 void setupEducationSection(Section* s);
 void setupContactSection(Section* s);
 
+bool firstLoad = TRUE;
+#define SCROLL_END 60
+
 s16 verticalScrollValue = 0;
 
 u16 andrewsResumeTilesLoc;
@@ -33,7 +36,7 @@ void updateMainSection(Section* s)
     static u8 tileCounter = 0;
 
     // raise title
-    if (verticalScrollValue<60)
+    if (verticalScrollValue < SCROLL_END)
     {
         verticalScrollValue++;
         VDP_setVerticalScroll(BG_A, verticalScrollValue);
@@ -110,6 +113,7 @@ void updateMainSection(Section* s)
 
 void loadMainSection(Section* s)
 {
+    KLog("Loading");
     resetVDPStack();
 
     // load text
@@ -153,10 +157,22 @@ void loadMainSection(Section* s)
     VDP_drawText("Experience", 28, 24);
     VDP_drawText("Education", 4, 28);
     VDP_drawText("Contact", 28, 28);
+
+    // show cursor
+    SPR_setVisibility(cursor, VISIBLE);
+
+    // set scroll if not first load, otherwise set first load to false
+    if (firstLoad)
+        firstLoad = FALSE;
+    else
+        VDP_setVerticalScroll(BG_A, SCROLL_END);
 }
 
 void setupMainSection(Section* s)
 {
+    // DEBUG STRING
+    sprintf(s->DBG_STR, "%s", "Main Section");
+
     // setup scrolling
     verticalScrollValue = -96;
     VDP_setVerticalScroll(BG_A, verticalScrollValue);
@@ -168,6 +184,11 @@ void setupMainSection(Section* s)
     s->links[1][0] = malloc(sizeof(Section));
     s->links[0][1] = malloc(sizeof(Section));
     s->links[1][1] = malloc(sizeof(Section));
+
+    setupSkillsSection(s->links[0][0]);
+    setupExperienceSection(s->links[1][0]);
+    setupEducationSection(s->links[0][1]);
+    setupContactSection(s->links[1][1]);
 
     // coords
     s->linkCoords[0][0][0] = 12;

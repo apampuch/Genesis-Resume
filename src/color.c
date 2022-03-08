@@ -151,8 +151,8 @@ u16 smoothRotateHue(u16 colorToRotate, u16 brightestColor)
     u16 newColor = rotateHue(colorToRotate);
     u16 newBrightest = colorize(brightestColor, colorToRotate);
 
-    KLog_H1("Old Brightest: ", brightestColor);
-    KLog_H1("New Brightest: ", newBrightest);
+    // KLog_H1("Old Brightest: ", brightestColor);
+    // KLog_H1("New Brightest: ", newBrightest);
 
     // if the brightest color is the same as before, do it again until we do it right
     if (newBrightest == brightestColor)

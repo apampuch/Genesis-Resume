@@ -12,6 +12,17 @@ u16 getVDPStack()
 // Called in by each setup function to do resetting.
 void resetVDPStack()
 {
+    // clear tile data
+    if (VDPStack - TILE_USERINDEX > 0) // check to make sure we don't get rid of stuff we might need
+        VDP_fillTileData(0, TILE_USERINDEX, VDPStack - TILE_USERINDEX, TRUE);
+
+    // clear tilemap
+    VDP_clearPlane(BG_A, FALSE);
+    VDP_clearPlane(BG_B, TRUE);
+
+    // reset scroll
+    VDP_setVerticalScroll(BG_A, 0);
+
     VDPStack = TILE_USERINDEX;
 }
 

@@ -10,7 +10,7 @@ void loadEducationSection(Section* s)
 
 }
 
-void updateEducationSection(Section s)
+void updateEducationSection(Section* s)
 {
     
 }

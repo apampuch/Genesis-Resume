@@ -19,6 +19,7 @@
     "intro.h": "c",
     "debug.h": "c",
     "color.h": "c",
-    "sections.h": "c"
+    "sections.h": "c",
+    "text.h": "c"
 }
 }

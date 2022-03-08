@@ -15,6 +15,7 @@ typedef struct Section
 
     void (*updateFunc) (struct Section* self);
     void (*loadFunc) (struct Section* self);
+    char DBG_STR[32];
 } Section;
 
 Section* currentSection();

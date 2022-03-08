@@ -10,7 +10,7 @@ void loadContactSection(Section* s)
 
 }
 
-void updateContactSection(Section s)
+void updateContactSection(Section* s)
 {
     
 }

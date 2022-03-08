@@ -10,7 +10,7 @@ void loadExperienceSection(Section* s)
 
 }
 
-void updateExperienceSection(Section s)
+void updateExperienceSection(Section* s)
 {
     
 }
