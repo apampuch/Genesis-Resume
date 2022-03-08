@@ -117,7 +117,6 @@ void updateMainSection(Section* s)
 
 void loadMainSection(Section* s)
 {
-    KLog("Loading");
     resetVDPStack();
 
     // load text

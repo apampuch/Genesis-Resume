@@ -27,6 +27,9 @@ void loadSkillsSection(Section* s)
     // DEBUG STRING
     sprintf(s->DBG_STR, "%s", "Skills Section");
 
+    // reset palette
+    PAL_setPaletteColors(0, &Greyscale);
+
     // clear vdp and map
     resetVDPStack();
 
