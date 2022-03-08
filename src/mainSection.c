@@ -13,7 +13,14 @@ void setupContactSection(Section* s);
 bool firstLoad = TRUE;
 #define SCROLL_END 60
 
+#define HORIZ_VAL_LEN 32
+#define HORIZ_VAL_HALF_LEN 16
 s16 verticalScrollValue = 0;
+s16 horizScrollValues[HORIZ_VAL_LEN] = {   
+                                0, 1, 2, 3, 3, 3, 2, 1, 0, -1, -2, -3, -3, -3, -2, -1,
+                                0, 1, 2, 3, 3, 3, 2, 1, 0, -1, -2, -3, -3, -3, -2, -1,
+                            };
+u16 horizScrollStart = 0; // start value for iteration of horizontal scroll values
 
 u16 andrewsResumeTilesLoc;
 u16 backgroundLoc;
@@ -78,12 +85,6 @@ void updateMainSection(Section* s)
         VDP_loadTileData(tilesInRAM, TILE_FONTINDEX, BubbleFont.numTile, DMA);
         // VDP_loadFontData(&tilesInRAM, BubbleFont.numTile, DMA);
         tileCounter++;
-
-        // TODO finish sine wave background
-
-        // VDP_setScrollingMode(HSCROLL_LINE, VSCROLL_PLANE);
-        // s16 scrollValues[2] = {0, 0};
-        // VDP_setHorizontalScrollLine(BG_B, 64, scrollValues, 2, DMA);
     }
     // enable selection
     else
@@ -91,6 +92,7 @@ void updateMainSection(Section* s)
         // reveal cursor and allow control
         SPR_setVisibility(cursor, VISIBLE);
         JOY_setEventHandler(menuControls);
+
         if (++masterTimer == TICK_RATE)
         {
             masterTimer = 0;
@@ -100,7 +102,7 @@ void updateMainSection(Section* s)
             if (colorTicker == TICKER_MAX || colorTicker == TICKER_MIN)
                 colorChange = -colorChange;
 
-            s8 colorMod = clamp(colorTicker, 0, 5);
+            s8 colorMod = clamp(colorTicker, 0, 4);
 
             // darken and lighten
             const u8 greens[8] = {0, 1, 2, 3, 4, 5, 6, 7};
@@ -111,6 +113,17 @@ void updateMainSection(Section* s)
                 colorToSet = colorToSet << VDPPALETTE_GREENSFT;
                 PAL_setColor(colorIndex, colorToSet);
             }
+
+        // "sine" wave background
+        u16 horizLineCounter = 0;
+        static u16 offset = 0;
+        offset = (offset + 1) % HORIZ_VAL_HALF_LEN;
+        KLog_U1("Offset: ", offset);
+        while (horizLineCounter < 320)
+        {
+            VDP_setHorizontalScrollLine(BG_B, horizLineCounter, &horizScrollValues[offset], HORIZ_VAL_HALF_LEN, DMA);
+            horizLineCounter += HORIZ_VAL_HALF_LEN;
+        }
         }
     }
 }
@@ -155,6 +168,9 @@ void loadMainSection(Section* s)
     // setup background color
     colorizeRange(1,9, RGB24_TO_VDPCOLOR(0x00FF00));
 
+    // setup scrolling modes
+    VDP_setScrollingMode(HSCROLL_LINE, VSCROLL_PLANE);
+
     // place text
     VDP_drawText("Skills", 4, 24);
     VDP_drawText("Experience", 28, 24);
@@ -185,6 +201,13 @@ void setupMainSection(Section* s)
     VDP_setVerticalScroll(BG_A, verticalScrollValue);
     s->updateFunc = &updateMainSection;
     s->loadFunc = &loadMainSection;
+
+    // setup horizontal scroll array
+    for (u16 i = 0; i < HORIZ_VAL_LEN; i++)
+    {
+        horizScrollValues[i] -= 8;
+    }
+    
 
     // setup links
     s->links[0][0] = malloc(sizeof(Section));
