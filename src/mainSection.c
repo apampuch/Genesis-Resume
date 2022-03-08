@@ -1,5 +1,6 @@
 #include "cavalier_debug.h"
 #include "color.h"
+#include "controller.h"
 #include "sections.h"
 #include "vdp_manage.h"
 #include <resources.h>
@@ -87,6 +88,9 @@ void updateMainSection(Section* s)
     // enable selection
     else
     {
+        // reveal cursor and allow control
+        SPR_setVisibility(cursor, VISIBLE);
+        JOY_setEventHandler(menuControls);
         if (++masterTimer == TICK_RATE)
         {
             masterTimer = 0;
@@ -158,14 +162,18 @@ void loadMainSection(Section* s)
     VDP_drawText("Education", 4, 28);
     VDP_drawText("Contact", 28, 28);
 
-    // show cursor
-    SPR_setVisibility(cursor, VISIBLE);
-
     // set scroll if not first load, otherwise set first load to false
     if (firstLoad)
+    {
+        KLog("yeet");
         firstLoad = FALSE;
+        SPR_setVisibility(cursor, HIDDEN);
+    }
     else
+    {
         VDP_setVerticalScroll(BG_A, SCROLL_END);
+        SPR_setVisibility(cursor, VISIBLE);
+    }
 }
 
 void setupMainSection(Section* s)

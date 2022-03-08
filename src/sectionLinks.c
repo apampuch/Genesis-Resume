@@ -21,7 +21,6 @@ void previousLink()
     if (sectionStackIndex > 1)
     {
         --sectionStackIndex;
-        KLog(sectionStack[sectionStackIndex - 1]->DBG_STR);
         // load section
         sectionStack[sectionStackIndex - 1]->loadFunc(sectionStack[sectionStackIndex - 1]);
     }

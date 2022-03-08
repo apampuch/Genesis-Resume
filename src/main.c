@@ -22,12 +22,11 @@ int main()
 
     // setup controls
     // JOY_setEventHandler(colorizeDebugCallback); // DEBUG ONLY
-    JOY_setEventHandler(menuControls);
+    // JOY_setEventHandler(menuControls);
 
     // setup sections
     Section mainSection;
     setupMainSection(&mainSection);
-    followSectionLink(&mainSection);
 
     // clear font data so it can fade in
     VDP_fillTileData(0, TILE_FONTINDEX, 93, TRUE);
@@ -40,6 +39,9 @@ int main()
         mainSection.linkCoords[0][0][1], 
         TILE_ATTR(PAL1, 0, 0, 0)
     );
+
+    // load main section
+    followSectionLink(&mainSection);
 
     Section* curSec;
     while(1)
