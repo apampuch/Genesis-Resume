@@ -1,26 +1,11 @@
 #include "color.h"
 #include "sections.h"
 #include "text.h"
-#include "resources.h"
+#include <resources.h>
 #include "vdp_manage.h"
 
 int counter = 0;
 u16 dyeColor = RGB24_TO_VDPCOLOR(0xFF0000);
-
-void loadSkillsSection(Section* s);
-void updateSkillsSection(Section* s);
-
-void setupSkillsSection(Section* s)
-{
-    s->selected[0] = 0;
-    s->selected[1] = 0;
-
-    s->maxes[0] = 0;
-    s->maxes[1] = 0;
-
-    s->loadFunc = &loadSkillsSection;
-    s->updateFunc = &updateSkillsSection;
-}
 
 void loadSkillsSection(Section* s)
 {
@@ -35,9 +20,9 @@ void loadSkillsSection(Section* s)
 
     // print skills
     const int START_ROW = 2;
-    for (u16 i = 0; i <= 22; i++)
+    for (u16 i = 0; i <= skillsText.length; i++)
     {
-        VDP_drawTextBG(VDP_BG_A, skillsText[i], 2, i + START_ROW);
+        VDP_drawTextBG(VDP_BG_A, skillsText.text[i], 2, i + START_ROW);
     }
 
     // setup background
@@ -57,4 +42,16 @@ void updateSkillsSection(Section* s)
         dyeColor = smoothRotateHue(dyeColor, PAL_getColor(8));
         colorizeRange(1,9, dyeColor);
     }
+}
+
+void setupSkillsSection(Section* s)
+{
+    s->selected[0] = 0;
+    s->selected[1] = 0;
+
+    s->maxes[0] = 0;
+    s->maxes[1] = 0;
+
+    s->loadFunc = &loadSkillsSection;
+    s->updateFunc = &updateSkillsSection;
 }

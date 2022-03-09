@@ -21,6 +21,7 @@
     "color.h": "c",
     "sections.h": "c",
     "text.h": "c",
-    "vdp_manage.h": "c"
+    "vdp_manage.h": "c",
+    "cavalier_debug.h": "c"
 }
 }
