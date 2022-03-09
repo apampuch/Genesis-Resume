@@ -26,8 +26,6 @@ char skillsText[22][40] =
     "Lambda Functions"
 };
 
-char g[] = "B.S., Software Development:  Western Governors University";
-
 char WGUText[9][40] =
 {
     "B.S., Software Development",
