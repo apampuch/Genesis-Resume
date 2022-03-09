@@ -172,10 +172,10 @@ void loadMainSection(Section* s)
     VDP_setScrollingMode(HSCROLL_LINE, VSCROLL_PLANE);
 
     // place text
-    VDP_drawText("Skills", 4, 24);
-    VDP_drawText("Experience", 28, 24);
-    VDP_drawText("Education", 4, 28);
-    VDP_drawText("Contact", 28, 28);
+    VDP_drawText("Skills", LINK_DRAWTEXT_ARGS(s->linkCoords[0][0], SCROLL_END));
+    VDP_drawText("Experience", LINK_DRAWTEXT_ARGS(s->linkCoords[1][0], SCROLL_END));
+    VDP_drawText("Education", LINK_DRAWTEXT_ARGS(s->linkCoords[0][1], SCROLL_END));
+    VDP_drawText("Contact", LINK_DRAWTEXT_ARGS(s->linkCoords[1][1], SCROLL_END));
 
     // set scroll if not first load, otherwise set first load to false
     if (firstLoad)
@@ -207,7 +207,6 @@ void setupMainSection(Section* s)
     {
         horizScrollValues[i] -= 8;
     }
-    
 
     // setup links
     s->links[0][0] = malloc(sizeof(Section));

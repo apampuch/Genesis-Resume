@@ -20,8 +20,12 @@ void resetVDPStack()
     VDP_clearPlane(BG_A, FALSE);
     VDP_clearPlane(BG_B, TRUE);
 
-    // reset scroll
+    // reset scroll    
+    VDP_setScrollingMode(HSCROLL_PLANE, VSCROLL_PLANE);
+    VDP_setHorizontalScroll(BG_A, 0);
+    VDP_setHorizontalScroll(BG_B, 0);
     VDP_setVerticalScroll(BG_A, 0);
+    VDP_setVerticalScroll(BG_B, 0);
 
     VDPStack = TILE_USERINDEX;
 }

@@ -20,6 +20,7 @@
     "debug.h": "c",
     "color.h": "c",
     "sections.h": "c",
-    "text.h": "c"
+    "text.h": "c",
+    "vdp_manage.h": "c"
 }
 }
