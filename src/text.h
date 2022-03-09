@@ -12,3 +12,4 @@ TextWrapper skillsText;
 TextWrapper WGUText;
 TextWrapper ChuoText;
 TextWrapper CSUMBText;
+TextWrapper ContactText;

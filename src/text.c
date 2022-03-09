@@ -74,3 +74,18 @@ TextWrapper CSUMBText =
     },
     8
 };
+
+TextWrapper ContactText =
+{
+    {
+        "Andrew Pampuch",
+        "",
+        "401 Purisima Ave",
+        "Sunnyvale, CA, 94086",
+        "",
+        "408-607-0833",
+        "",
+        "apampuch@protonmail.com"
+    },
+    8
+};

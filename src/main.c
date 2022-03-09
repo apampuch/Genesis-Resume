@@ -5,7 +5,8 @@
 #include "controller.h"
 #include "vdp_manage.h"
 
-// DO NOT CHANGE PAL0 OR PAL1
+// PAL0 is always greyscale or a variant
+// PAL1 is always text color
 
 int main()
 {

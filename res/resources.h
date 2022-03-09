@@ -9,6 +9,7 @@ extern const TileSet BubbleFont;
 extern const TileSet Keyboard;
 extern const TileSet PCB;
 extern const TileSet Diploma;
+extern const TileSet Phone;
 extern const TileSet AndrewsResume;
 extern const SpriteDefinition CursorSprite;
 
