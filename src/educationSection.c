@@ -1,5 +1,18 @@
+#include <genesis.h>
+#include "resources.h"
 #include "sections.h"
+#include "text.h"
 #include "vdp_manage.h"
+
+void loadCollegeSection(Section* s)
+{
+
+}
+
+void setupCollegeSection(Section* s, u16 textIndex)
+{
+
+}
 
 void updateEducationSection(Section* s)
 {
@@ -10,7 +23,10 @@ void loadEducationSection(Section* s)
 {
     resetVDPStack();
 
-    // loadFreeVDPSpace
+    // set diploma palette
+    PAL_setPalette(PAL3, DiplomaPal.data);
+    u16 diplomaPos = loadFreeVDPSpace(&Diploma);
+    VDP_fillTileMapRectInc(BG_B, TILE_ATTR_FULL(PAL3, 0, 0, 0, diplomaPos), 0, 0, 40, 28);
 
     // setup WGU, Chuo, CSUMB
     VDP_drawText("Western Governors University", LINK_DRAWTEXT_ARGS(s->linkCoords[0][0], 0));
@@ -40,4 +56,7 @@ void setupEducationSection(Section* s)
     s->links[0][0] = malloc(sizeof(Section));
     s->links[0][1] = malloc(sizeof(Section));
     s->links[0][2] = malloc(sizeof(Section));
+
+    // setup WGU, Chuo, and CSUMB sections
+
 }

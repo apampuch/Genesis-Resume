@@ -5,6 +5,8 @@
 #include "controller.h"
 #include "vdp_manage.h"
 
+// DO NOT CHANGE PAL0 OR PAL1
+
 int main()
 {
     SPR_initEx(0x50);
