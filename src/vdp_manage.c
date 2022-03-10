@@ -17,7 +17,7 @@ void resetVDPStack()
         VDP_fillTileData(0, TILE_USERINDEX, VDPStack - TILE_USERINDEX, TRUE);
 
     // clear tilemap
-    VDP_clearPlane(BG_A, FALSE);
+    VDP_clearPlane(BG_A, TRUE);
     VDP_clearPlane(BG_B, TRUE);
 
     // reset scroll    
