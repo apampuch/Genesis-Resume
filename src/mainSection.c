@@ -13,14 +13,22 @@ void setupContactSection(Section* s);
 bool firstLoad = TRUE;
 #define SCROLL_END 60
 
+// vals that should be static but can't be due to soft reset bugs
+s8 colorTicker;
+s8 colorChange;
+u8 tileCounter;
+u8 masterTimer;
+u16 horizOffset;
+
 #define HORIZ_VAL_LEN 32
 #define HORIZ_VAL_HALF_LEN 16
 s16 verticalScrollValue = 0;
-s16 horizScrollValues[HORIZ_VAL_LEN] = {   
-                                0, 1, 2, 3, 3, 3, 2, 1, 0, -1, -2, -3, -3, -3, -2, -1,
-                                0, 1, 2, 3, 3, 3, 2, 1, 0, -1, -2, -3, -3, -3, -2, -1,
-                            };
-u16 horizScrollStart = 0; // start value for iteration of horizontal scroll values
+s16 horizScrollValues[HORIZ_VAL_LEN] = 
+{   
+    0-8, 1-8, 2-8, 3-8, 3-8, 3-8, 2-8, 1-8, 0-8, -1-8, -2-8, -3-8, -3-8, -3-8, -2-8, -1-8,
+    0-8, 1-8, 2-8, 3-8, 3-8, 3-8, 2-8, 1-8, 0-8, -1-8, -2-8, -3-8, -3-8, -3-8, -2-8, -1-8,
+};
+// u16 horizScrollStart = 0; // start value for iteration of horizontal scroll values
 
 u16 andrewsResumeTilesLoc;
 u16 backgroundLoc;
@@ -35,13 +43,10 @@ void drawAndrewsResumeLetter(u16 index, u16 x, u16 y)
 void updateMainSection(Section* s)
 {
     const u8 TICK_RATE = 6;
-    static u8 masterTimer;
 
     const s8 TICKER_MAX = 6;
     const s8 TICKER_MIN = -4;
-    static s8 colorTicker = 0;
-    static s8 colorChange = 1;
-    static u8 tileCounter = 0;
+
 
     // raise title
     if (verticalScrollValue < SCROLL_END)
@@ -116,12 +121,11 @@ void updateMainSection(Section* s)
 
         // "sine" wave background
         u16 horizLineCounter = 0;
-        static u16 offset = 0;
-        offset = (offset + 1) % HORIZ_VAL_HALF_LEN;
-        KLog_U1("Offset: ", offset);
+        horizOffset = (horizOffset + 1) % HORIZ_VAL_HALF_LEN;
+        KLog_U1("Offset: ", horizOffset);
         while (horizLineCounter < 320)
         {
-            VDP_setHorizontalScrollLine(BG_B, horizLineCounter, &horizScrollValues[offset], HORIZ_VAL_HALF_LEN, DMA);
+            VDP_setHorizontalScrollLine(BG_B, horizLineCounter, &horizScrollValues[horizOffset], HORIZ_VAL_HALF_LEN, DMA);
             horizLineCounter += HORIZ_VAL_HALF_LEN;
         }
         }
@@ -193,6 +197,14 @@ void loadMainSection(Section* s)
 
 void setupMainSection(Section* s)
 {
+    // first time bullshit to fix soft reset bugs
+    firstLoad = TRUE;
+    colorTicker = 0;
+    colorChange = 1;
+    tileCounter = 0;
+    masterTimer = 0;
+    horizOffset = 0;
+
     // DEBUG STRING
     sprintf(s->DBG_STR, "%s", "Main Section");
 
@@ -201,12 +213,6 @@ void setupMainSection(Section* s)
     VDP_setVerticalScroll(BG_A, verticalScrollValue);
     s->updateFunc = &updateMainSection;
     s->loadFunc = &loadMainSection;
-
-    // setup horizontal scroll array
-    for (u16 i = 0; i < HORIZ_VAL_LEN; i++)
-    {
-        horizScrollValues[i] -= 8;
-    }
 
     // setup links
     s->links[0][0] = malloc(sizeof(Section));
