@@ -180,8 +180,8 @@ TextWrapper EquinixText =
         "Assisted users with upgrading",
         "Windows 7 to Windows 10",
         "",
-        "Wrote scripts in Python and Powershell",
-        "to automate tasks"
+        "Wrote scripts in Python and",
+        "Powershell to automate tasks"
     },
     9
 };

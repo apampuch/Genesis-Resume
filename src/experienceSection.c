@@ -3,6 +3,11 @@
 #include "vdp_manage.h"
 #include <resources.h>
 
+void updateJobSection(Section* s)
+{
+    // do nothing
+}
+
 void loadJobSection(Section* s)
 {
     resetVDPStack();
@@ -14,11 +19,25 @@ void loadJobSection(Section* s)
 
     // hide cursor
     SPR_setVisibility(cursor, HIDDEN);
+
+    // print job info
+    TextWrapper* textPtr = (TextWrapper*)s->extraData[0];
+    u16 startRow = (VDP_getScreenHeight() / 16) - (textPtr->length / 2); // start in the center
+    for (u16 i = 0; i <= textPtr->length; i++)
+    {
+        VDP_drawTextBG(VDP_BG_A, textPtr->text[i], 2, i + startRow);
+    }
 }
 
-void setupJobSection(Section* s, TextWrapper* t)
+void setupJobSection(Section* s, TextWrapper* txt)
 {
+    s->loadFunc = &loadJobSection;
+    s->updateFunc = &updateJobSection;
 
+    s->maxes[0] = 0;
+    s->maxes[1] = 0;
+
+    s->extraData[0] = txt; // pass in text
 }
 
 void loadExperienceSection(Section* s)
@@ -32,11 +51,19 @@ void loadExperienceSection(Section* s)
 
     // show cursor
     SPR_setVisibility(cursor, VISIBLE);
+
+    char titles[6][14] = { "PySRCG", "ocr.moe", "Accenture", "Nijiya Market", "Ophtek", "Equinix"};
+
+    // draw text
+    for (u16 i = 0; i < 6; i++)
+    {
+        VDP_drawText(titles[i], LINK_DRAWTEXT_ARGS(s->linkCoords[0][i], 0));
+    }
 }
 
 void updateExperienceSection(Section* s)
 {
-    
+    // do nothing
 }
 
 void setupExperienceSection(Section* s)
@@ -52,7 +79,7 @@ void setupExperienceSection(Section* s)
     TextWrapper* texts[6] = { &PySRCGText, &ocrMoeText, &AccentureText, &NijiyaText, &OphtekText, &EquinixText };
 
     // setup coords and links
-    for (u16 i = 0; i < 5; i++)
+    for (u16 i = 0; i < 6; i++)
     {
         u16 y = i * 24 + 36;
 
